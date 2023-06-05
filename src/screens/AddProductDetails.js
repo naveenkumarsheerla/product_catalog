@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Box, Button, FormControl, Grid, MenuItem, Paper, TextField } from '@mui/material';
+import { Box,styled, Button, FormControl, Grid, MenuItem, Paper, TextField,useMediaQuery } from '@mui/material';
 import S3 from 'react-s3';
 import { Buffer } from 'buffer';
 
@@ -12,26 +12,6 @@ const config = {
 };
 
 const AddProductDetails = () => {
-    const textFieldStyles = {
-        '& .MuiOutlinedInput-root': {
-            '& fieldset': {
-                borderColor: '#1976D2',
-            },
-            '&:hover fieldset': {
-                borderColor: '#1976D2',
-            },
-        },
-        '& .MuiInputBase-input': {
-            color: '#1976D2',
-            fontSize: '15px',
-            fontFamily: 'Open Sans',
-        },
-        '& .MuiInputLabel-root': {
-            color: '#1976D2',
-            fontSize: '13px',
-            fontFamily: 'Open Sans',
-        },
-    }
 
     const [categories, setCategories] = useState([]);
     const [subCategories, setSubCategories] = useState([]);
@@ -52,7 +32,7 @@ const AddProductDetails = () => {
 
     const ITEM_HEIGHT = 48;
     const ITEM_PADDING_TOP = 8;
-    const MenuProps = {
+    const menuprops = {
         PaperProps: {
             style: {
                 maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
@@ -63,8 +43,8 @@ const AddProductDetails = () => {
 
 
     useEffect(() => {
-        // https://2zii0x3fsl.execute-api.ap-south-1.amazonaws.com/dev/get-category
-        fetch('http://localhost:8000/get-category')
+      
+        fetch('https://2zii0x3fsl.execute-api.ap-south-1.amazonaws.com/dev/get-category')
             .then(response => response.json())
             .then(data => {
                 setCategories(data);
@@ -80,8 +60,8 @@ const AddProductDetails = () => {
         const id = (selectedCategory)
         console.log(typeof (id))
         if (id) {
-            // https://2zii0x3fsl.execute-api.ap-south-1.amazonaws.com/dev/subcategories?category_name=${id}
-            fetch(`http://localhost:8000/category-Id/${id}`)
+       
+            fetch(`https://2zii0x3fsl.execute-api.ap-south-1.amazonaws.com/dev/subcategories?category_name=${id}`)
                 .then(response => response.json())
                 .then(data => {
                     setSubCategories(data);
@@ -195,9 +175,9 @@ const AddProductDetails = () => {
 
         };
         console.log(formData)
-        // https://2zii0x3fsl.execute-api.ap-south-1.amazonaws.com/dev/post-product
+     
 
-        fetch('http://localhost:8000/post-product', {
+        fetch('https://2zii0x3fsl.execute-api.ap-south-1.amazonaws.com/dev/post-product', {
             method: 'POST',
             body: JSON.stringify(formData),
             headers: {
@@ -229,51 +209,129 @@ const AddProductDetails = () => {
         setProductKeywords('');
     };
 
+    const isBelow480px = useMediaQuery('(max-width:480px)');
+
+    const containerStyles = {
+        // minHeight: '100vh',
+        // display: 'flex',
+        // alignItems: 'center',
+        // justifyContent: 'center',
+        padding: '10px 0',
+        ...(isBelow480px && {
+            // minHeight: '50vh',
+            padding: '50px 0',
+          }),
+    };
+
+    const formStyles = {
+        padding: '20px',
+        borderRadius: 3,
+        // boxShadow: '5px 5px 10px #ccc',
+    };
+
+
+
+    const textFieldStyles = {
+        width: '100%',
+
+        '& .MuiOutlinedInput-root': {
+            '& fieldset': {
+                borderColor: '#1976D2',
+            },
+            '&:hover fieldset': {
+                borderColor: '#1976D2',
+            },
+        },
+        '& .MuiInputBase-input': {
+            // color: '#1976D2',
+            fontSize: '14px',
+            fontFamily: 'Open Sans',
+        },
+        '& .MuiInputLabel-root': {
+            color: '#1976D2',
+            fontSize: '13px',
+            fontFamily: 'Open Sans',
+        },
+    };
+
+    const uploadButtonStyles = {
+        width: '100%',
+
+    borderColor: '#f09916',
+    '&:hover': {
+      borderColor: '#f09916',
+    },
+    ...(isBelow480px && {
+      width: '100%',
+    }),
+      };
+
+    const ClearButton = styled(Button)(({ theme }) => ({
+        color: "white",
+        padding: "3px 18px",
+        backgroundColor: "#f56420",
+        border: "1px solid #f56420",
+        borderRadius: "20px",
+        fontWeight: "bold",
+        margin: "15px 4px",
+        fontSize: "0.8rem",
+        '&:hover': {
+            backgroundColor: '#f09916',
+            borderColor: "#f09916",
+        },
+        ...(isBelow480px && {
+            fontSize: "0.6rem",
+          }),
+    }));
+
+    const SaveButton = styled(Button)(({ theme }) => ({
+        color: "white",
+        padding: "3px 20px",
+        backgroundColor: "#1976D2",
+        border: "1px solid #1976D2",
+        borderRadius: "20px",
+        fontWeight: "bold",
+        margin: "15px 4px",
+        fontSize: "0.8rem",
+        '&:hover': {
+            backgroundColor: '#065cb3',
+            borderColor: "#065cb3",
+        },
+        ...(isBelow480px && {
+            fontSize: "0.6rem",
+          }),
+    }));
+
     return (
         <>
-            <div
-                style={{
-                    // backgroundColor: '#f2f2f2',
-                    minHeight: '100vh',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-
-                    // padding: '20px',
-                }}
-            >
-                <Paper elevation={10} >
-                    <form onSubmit={handleSubmit} >
+                <div style={containerStyles}>
+                <form onSubmit={handleSubmit}>
+                    <Grid container justifyContent="center">
+                        <Grid item xs={10} sm={6} md={4} lg={4} xl={4}>
+                            <Paper elevation={10} style={formStyles}>
                         <Box
                             display="flex"
-                            flexDirection={"column"}
-                            maxWidth={500}
+                            flexDirection="column"     
                             backgroundColor="white"
                             alignItems="center"
-                            justifyContent={"center"}
-                            // margin="auto"
-                            // minHeight= '100vh'
-                            // marginTop={25}
-                            padding="20px 60px"
-                            borderRadius={3}
-                            boxShadow={'5px 5px 10px #ccc'}
+                            justifyContent="center"                      
+                            padding="0px 20px"     
                         >
 
                             <h3 className="Auth-form-title">Product Details</h3>
                             {/* <Grid container> */}
                             {/* <Grid item xs={6}> */}
 
-                            <FormControl sx={{ m: 1, width: 400 }}>
+                            <FormControl fullWidth sx={{ m: 1 }}>
                                 <TextField
                                     // labelId="demo-multiple-name-label"
                                     label="Category"
                                     id="category"
                                     size='small'
                                     select
-                                    displayEmpty
                                     value={selectedCategory}
                                     // input={<OutlinedInput label="Category" />}
-                                    MenuProps={MenuProps}
+                                    menuprops={menuprops}
                                     onChange={handleCategoryChange}
                                     sx={textFieldStyles}
                                 >
@@ -283,20 +341,19 @@ const AddProductDetails = () => {
                                 </TextField>
                             </FormControl>
 
-                            <FormControl sx={{ m: 1, width: 400 }}>
+                            <FormControl fullWidth sx={{ m: 1 }}>
                                 <TextField
                                     label="Category ID"
                                     id="categoryId"
+                                    variant="outlined"
                                     size='small'
                                     value={selectedCategoryId}
                                     disabled
+                                    sx={textFieldStyles}
                                 />
                             </FormControl>
 
-                            {/* </Grid> */}
-                            <Grid item xs={6}>
-                                <div>
-                                    <FormControl sx={{ m: 1, width: 400 }}>
+                                    <FormControl fullWidth sx={{ m: 1 }}>
                                         <TextField
                                             id="subCategory"
                                             // name="type"
@@ -305,7 +362,7 @@ const AddProductDetails = () => {
                                             select
                                             displayEmpty
                                             label="Sub Category"
-                                            MenuProps={MenuProps}
+                                            menuprops={menuprops}
                                             value={selectedSubCategory}
                                             onChange={handleSubCategoryChange}
                                             sx={textFieldStyles}
@@ -315,19 +372,19 @@ const AddProductDetails = () => {
                                             ))}
                                         </TextField>
                                     </FormControl>
-                                </div>
-                            </Grid>
-                            <FormControl sx={{ m: 1, width: 400 }}>
+                            <FormControl fullWidth sx={{ m: 1 }}>
                                 <TextField
-                                    label="Category ID"
-                                    id="categoryId"
+
+                                    label="Sub Category ID"
                                     size='small'
+                                    variant="outlined"
                                     value={selectedSubCategoryId}
                                     disabled
+                                    sx={textFieldStyles}
                                 />
                             </FormControl>
-                            <div>
-                                <FormControl sx={{ m: 1, width: 400 }}>
+
+                                <FormControl fullWidth sx={{ m: 1 }}>
                                     <TextField
                                         type="text"
                                         label="Brand Name"
@@ -338,9 +395,8 @@ const AddProductDetails = () => {
                                         sx={textFieldStyles}
                                     />
                                 </FormControl>
-                            </div>
-                            <div>
-                                <FormControl sx={{ m: 1, width: 400 }}>
+
+                                <FormControl fullWidth sx={{ m: 1 }}>
                                     <TextField
                                         type="text"
                                         label="Product Name"
@@ -351,9 +407,8 @@ const AddProductDetails = () => {
                                         sx={textFieldStyles}
                                     />
                                 </FormControl>
-                            </div>
-                            <div>
-                                <FormControl sx={{ m: 1, width: 400 }}>
+
+                                <FormControl fullWidth sx={{ m: 1 }}>
                                     <TextField
                                         type="number"
                                         label="Product Price"
@@ -365,9 +420,8 @@ const AddProductDetails = () => {
                                         sx={textFieldStyles}
                                     />
                                 </FormControl>
-                            </div>
-                            <div>
-                                <FormControl sx={{ m: 1, width: 400 }}>
+
+                                <FormControl fullWidth sx={{ m: 1 }}>
                                     <TextField
                                         type="text"
                                         label="Product Weight"
@@ -379,9 +433,8 @@ const AddProductDetails = () => {
                                         sx={textFieldStyles}
                                     />
                                 </FormControl>
-                            </div>
-                            <div>
-                                <FormControl sx={{ m: 1, width: 400 }}>
+
+                                <FormControl fullWidth sx={{ m: 1 }}>
                                     <TextField
                                         type="text"
                                         label="Product Keywords"
@@ -392,9 +445,8 @@ const AddProductDetails = () => {
                                         sx={textFieldStyles}
                                     />
                                 </FormControl>
-                            </div>
-                            <div>
-                                <FormControl sx={{ m: 1, width: 400 }}>
+
+                                <FormControl fullWidth sx={{ m: 1 }}>
                                     <TextField id="outlined-multiline-static"
                                         label="Product Description"
                                         multiline
@@ -404,9 +456,7 @@ const AddProductDetails = () => {
                                         sx={textFieldStyles}
                                     />
                                 </FormControl>
-                            </div>
-                            <div>
-                                <FormControl sx={{ m: 1 }}>
+                                <FormControl fullWidth sx={{ m: 1 }}>
                                     <input
                                         type="file"
                                         accept="image/*"
@@ -416,20 +466,14 @@ const AddProductDetails = () => {
                                         multiple
                                         defaultValue={productImage}
                                         onChange={handleFileUpload}
+                                        sx={{ display: 'none' }}
                                     // onChange={(e) => setProductImage(data => ({ ...data, image: imgPath + /images/ + e.target.files[0].name }))}
                                     />
                                     <label htmlFor="productImage">
                                         <Button
                                             variant="outlined"
                                             component="span"
-                                            sx={{
-                                                width: 400,
-
-                                                borderColor: '#f09916',
-                                                '&:hover': {
-                                                    borderColor: '#f09916',
-                                                },
-                                            }} >
+                                            sx={uploadButtonStyles} >
                                             <span
                                                 style={{
                                                     fontSize: '11px',
@@ -443,22 +487,18 @@ const AddProductDetails = () => {
                                     </label>
 
                                 </FormControl>
-                            </div>
+
                             <div style={{ textAlign: 'center' }}>
-                                <button type="button"
-                                    onClick={handleClearButtonClick}
-                                    className="btn btn-primary btn-lg btn-sm  my-3"
-                                    style={{ paddingRight: '25px', paddingLeft: '25px', backgroundColor: '#035F9B', marginRight: '9px' }}
-                                >
-                                    Cancel
-                                </button>
-                                <button
-                                    type="submit"
-                                    className="btn btn-primary btn-lg btn-sm my-3"
-                                    style={{ paddingRight: '25px', paddingLeft: '25px', backgroundColor: '#035F9B', marginRight: '9px' }}
-                                >
-                                    Save
-                                </button>
+                            <ClearButton type="button"
+                                        onClick={handleClearButtonClick}
+                                    >
+                                           Cancel
+                                    </ClearButton>
+                                    <SaveButton
+                                        type="submit"
+                                    >
+                                        Save
+                                    </SaveButton>
                                 <div className="showcontent">
                                     {showSuccessMessage && (
                                         <div className="success-message">Successfully updated!</div>
@@ -466,14 +506,12 @@ const AddProductDetails = () => {
                                 </div>
                             </div>
                             {/* </Grid> */}
-                        </Box>
-
-                    </form>
-                </Paper>
-            </div>
-            <div>
-                {/* < ProductTable/> */}
-            </div>
+                            </Box>
+                        </Paper>
+                    </Grid>
+                </Grid>
+            </form>
+        </div >
         </>
     )
 }
