@@ -206,11 +206,11 @@ const AddProductDetails = () => {
         })
             .then(response => response.json())
             .then(data => {
-                // setShowSuccessMessage(true);
-                // setTimeout(() => {
-                //     setShowSuccessMessage(false);
-                // }, 2000)
-                // window.location.reload();
+                setShowSuccessMessage(true);
+                setTimeout(() => {
+                    setShowSuccessMessage(false);
+                }, 2000)
+                window.location.reload();
                 console.log(data)
             })
             .catch(error => {
@@ -319,7 +319,7 @@ const AddProductDetails = () => {
                             </Grid>
                             <FormControl sx={{ m: 1, width: 400 }}>
                                 <TextField
-                                    label="Category ID"
+                                    label="SubCategory ID"
                                     id="categoryId"
                                     size='small'
                                     value={selectedSubCategoryId}
