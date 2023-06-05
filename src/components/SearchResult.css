@@ -1,0 +1,143 @@
+@media only screen and (min-width: 300px)
+and (max-width:480px) {
+    .card-img {
+        height: 10rem;
+        width: 8rem;
+        margin: 1rem;     
+    }
+    .card-content-div{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+     .card-content{
+        display: flex;
+        flex-direction: row;
+      
+     }
+     .sort-options{
+        margin: 0.5rem;
+     }
+     .selectbox{
+        width: 8rem;
+        font-size: 0.7rem;
+     }
+     .filter-button{
+      height: 1.5rem;
+      margin:0.5rem;
+      font-size: 12px;
+      border-radius: 3px;
+      color: #000;;
+     }
+     .filter-container{
+      margin-top:-6px ;
+      margin-left: 0.5rem;
+      width: 12rem;
+     }
+    
+}
+
+@media only screen and (min-width: 1200px)
+ {
+  .card-img {
+    height: 10rem;
+    width: 8rem;
+    margin: 1rem;     
+}
+.card-content-div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+ .card-content{
+    display: flex;
+    flex-direction: row;
+  
+ }
+ .sort-options{
+    margin: 0.5rem;
+ }
+ .selectbox{
+    width: 8rem;
+    font-size: 0.7rem;
+ }
+ .filter-button{
+  height: 1.8rem;
+  margin:0.6rem;
+  font-size: 16px;
+  border-radius: 3px;
+  color: #000
+ }
+ .filter-container{
+  margin-top:-6px ;
+  margin-left: 0.8rem;
+  width: 12rem;
+
+ 
+ }
+
+.brand-container{
+   height: 100%;
+  
+}
+
+}
+
+.dropdown {
+   position: relative;
+   display: inline-block;
+ }
+ 
+ .dropdown-menu {
+   list-style: none;
+   padding: 0;
+   margin: 0;
+   position: absolute;
+   top: 100%;
+   left: 0;
+   display: none;
+   
+ }
+ 
+ .dropdown-menu li {
+   display: block;
+ }
+ 
+ .dropdown-menu li a {
+   display: block;
+   padding: 10px 12px;
+   text-decoration: none;
+   color: #000;
+ }
+ 
+ .dropdown:hover .dropdown-menu {
+   display: block;
+ }
+         /* brands container*/
+ .sub-dropdown-menu {
+   display: none;
+   position: absolute;
+   top: 0;
+   left: 100%;
+   width: 10rem;
+  
+    
+ }
+ 
+ .sub-dropdown-menu li {
+   display: block;
+   
+ }
+ 
+ .sub-dropdown-menu li a {
+   display: block;
+   padding: 10px 16px;
+   text-decoration: none;
+   color:#000;
+  
+ }
+ 
+ .dropdown:hover .sub-dropdown-menu {
+   display: block;
+ }
+ 

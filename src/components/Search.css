@@ -1,0 +1,143 @@
+.search {
+    position: relative;
+
+}
+
+.search input {
+    height: 40px;
+    text-indent: 25px;
+    border: 2px solid #d6d4d4;
+}
+
+.search input:focus {
+
+    box-shadow: none;
+    border: 1px solid blue;
+}
+
+.search .fa-search {
+
+    position: absolute;
+    top: 10px;
+    left: 16px;
+
+}
+
+
+@media only screen and (min-width:320px) and (max-width:480px) {
+
+    .search input {
+        width: 15rem;
+        border-color: blue;
+        border-width: 0.1rem
+    }
+
+    .search ::placeholder {
+        color: blue;
+        font-size: 0.9rem;
+    }
+
+    .search .fa-search {
+        position: absolute;
+        top: 12px;
+        color: blue;
+
+    }
+}
+
+@media only screen and (min-width:481px) and (max-width:768px) {
+
+    .search input {
+        width: 25rem;
+        border-width: 0.1rem;
+        border-color: blue;
+
+    }
+
+
+
+    .search ::placeholder {
+        color: blue;
+        font-size: 0.9rem;
+    }
+
+    .search .fa-search {
+        position: absolute;
+        top: 12px;
+        color: blue;
+
+    }
+}
+
+@media only screen and (min-width:769px)and (max-width:1024px) {
+
+    .search input {
+        width: 40rem;
+        margin-left: 40px;
+        border-width: 0.1rem;
+        border-color: blue;
+
+    }
+
+
+
+    .search ::placeholder {
+        color: blue;
+        font-size: 0.9rem;
+    }
+
+    .search .fa-search {
+        position: absolute;
+        top: 12px;
+        left: 52px;
+        color: blue;
+
+    }
+}
+
+@media only screen and (min-width:1025px)and (max-width:1200px) {
+
+    .search input {
+        width: 40rem;
+        /* margin-left: px; */
+        border-width: 0.1rem;
+        border-color: blue;
+
+    }
+
+
+
+    .search ::placeholder {
+        color: blue;
+        font-size: 0.9rem;
+    }
+
+    .search .fa-search {
+        position: absolute;
+        top: 12px;
+
+        color: blue;
+
+    }
+}
+
+@media only screen and (min-width: 1201px) {
+    .search input {
+        width: 60rem;
+        border-width: 0.1rem;
+        border-color: blue;
+    }
+
+    .search ::placeholder {
+        color: blue;
+        font-size: 0.9rem;
+    }
+
+    .search .fa-search {
+        position: absolute;
+        top: 12px;
+
+        color: blue;
+
+    }
+}

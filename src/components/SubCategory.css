@@ -1,0 +1,104 @@
+@media only screen and (min-width: 300px)
+and (max-width:480px) {
+    .image {
+        height: 8rem;
+    }
+    .btn-viewmore{
+
+        padding:1% 10%;
+        background-color: transparent;
+        font-size: 0.6rem;
+        margin-bottom: 1rem;
+      }
+      .categoriesname{
+        font-size: 0.8rem ;
+      }
+      /* .form{
+        width: 0.2rem;
+      } /
+      / .inputbox{
+        width: 5rem;
+      } */
+      .cardbody{
+        padding:3px 0 0 0;
+      }
+
+}
+
+
+@media only screen and (min-width: 481px)
+and (max-width:768px) {
+    .image {
+        height: 12rem;
+    }
+    .btn-viewmore{
+
+        padding:1% 10%;
+        background-color: transparent;
+        font-size: 0.6rem;
+        margin-bottom: 1rem;
+      }
+      .categoriesname{
+        font-size: 0.8rem ;
+      }
+      .cardbody{
+        padding:3px 0 0 0;
+      }
+}
+@media only screen and (min-width: 769px)
+and (max-width:1024px) {
+    .image {
+        height: 14rem;
+    }
+    .categoriesname{
+        font-size: 0.9rem ;
+      }
+      .cardbody{
+        padding:7px 0 5px 0;
+      }
+    .btn-viewmore{
+
+        padding:1% 15%;
+        background-color: transparent;
+        font-size: 0.8rem;
+        margin-bottom: 1rem;
+      }
+}
+@media only screen and (min-width: 1025px)
+and (max-width:1200px) {
+    .image {
+        height: 14rem;
+    }
+    .btn-viewmore{
+
+        padding:1% 15%;
+        background-color: transparent;
+        font-size: 0.8rem;
+        margin-bottom: 1rem;
+      }
+      .categoriesname{
+        font-size: 1rem ;
+      }
+      .cardbody{
+        padding:7px 0 5px 0;
+      }
+}
+@media only screen and (min-width: 1200px)
+ {
+    .image {
+        height: 16rem;
+    }
+    .btn-viewmore{
+
+        padding:2% 20%;
+        background-color: transparent;
+        font-size: 0.8rem;
+        margin-bottom: 1rem;
+      }
+      .categoriesname{
+        font-size: 1rem ;
+      }
+      .cardbody{
+        padding:10px;
+      }
+}
