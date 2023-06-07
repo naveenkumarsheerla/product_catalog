@@ -17,6 +17,7 @@ const AddSubCategory = () => {
     const [data, setData] = useState({})
     const [showSuccessMessage, setShowSuccessMessage] = useState('');
     const [selectedId, setSelectedId] = useState('')
+    const[selectedIdname, setSelectedIdname] = useState('')
     const [fileName, setFileName] = useState('');
 
     const navigate = useNavigate()
@@ -38,28 +39,30 @@ const AddSubCategory = () => {
     const handlesubmit = (e) => {
         e.preventDefault()
 
-
-        console.log(selectedId)
+           console.log(selectedIdname)
+        // console.log(selectedId)
         console.log(data)
         navigate("/addproductdetails")
 
         fetch('https://2zii0x3fsl.execute-api.ap-south-1.amazonaws.com/dev/post-subCategory',
             {
                 method: "POST",
-                body: JSON.stringify({ ...data, categoryName: selectedId }),
+                body: JSON.stringify({ ...data, categoryName: selectedId ,categoryId:selectedIdname }),
                 headers: {
                     "Content-Type": "application/json",
                 },
             })
             .then((res) => res.json())
-            .then((data) => {
-                setData(data)
-                setShowSuccessMessage(true);
-                setTimeout(() => {
-                    setShowSuccessMessage(false);
-                }, 1000)
-                window.location.reload();
-            })
+            .then((data) => console.log(data))
+            // { 
+            //     // setData(data)
+            //     // setShowSuccessMessage(true);
+            //     // setTimeout(() => {
+            //     //     setShowSuccessMessage(false);
+            //     // }, 1000)
+            //     // window.location.reload();
+            //     console.log(data)
+            // })
 
     }
 
@@ -183,7 +186,18 @@ const AddSubCategory = () => {
         setData({ ...data, name: '' })
     };
 
+    const handleSelectedId = (event) => {
+        setSelectedId(event.target.value);
+        setSelectedId('');
+        const selectedCategoryName = event.target.value;
+        setSelectedId(selectedCategoryName);
+        const selectedSubCategory = value.find(subcategory => subcategory.name === selectedCategoryName);
 
+        // Set the selected category ID
+        if (selectedSubCategory) {
+            setSelectedIdname(selectedSubCategory.id);
+        }
+    };
 
     return (
         <>
@@ -212,7 +226,8 @@ const AddSubCategory = () => {
                                             size='small'
                                             value={selectedId}
                                             select
-                                            onChange={(event) => setSelectedId(event.target.value)}
+                                            onChange={handleSelectedId}
+                                            // onChange={(event) => setSelectedId(event.target.value)}
                                             sx={textFieldStyles}
                                         >
 

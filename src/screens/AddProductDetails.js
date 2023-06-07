@@ -58,15 +58,16 @@ const AddProductDetails = () => {
     }, []);
 
     useEffect(() => {
-        const id = (selectedCategory)
-        console.log(typeof (id))
+        const id = (selectedCategoryId)
+        console.log((id))
         if (id) {
 
-            fetch(`https://2zii0x3fsl.execute-api.ap-south-1.amazonaws.com/dev/subcategories?category_name=${id}`)
+            fetch(`https://2zii0x3fsl.execute-api.ap-south-1.amazonaws.com/dev/get-subcategory/${id}`)
                 .then(response => response.json())
                 .then(data => {
                     setSubCategories(data);
-                    // console.log(data)
+                    console.log(data)
+
                 })
 
                 .catch(error => {
