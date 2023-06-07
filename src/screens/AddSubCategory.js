@@ -2,6 +2,7 @@ import { Button, FormControl, InputLabel, Select, MenuItem, TextField, styled, B
 import React, { useEffect, useState } from 'react'
 import S3 from 'react-s3';
 import { Buffer } from 'buffer';
+import { useNavigate } from 'react-router-dom';
 
 const config = {
     bucketName: 'catalog-naveen',
@@ -17,6 +18,8 @@ const AddSubCategory = () => {
     const [showSuccessMessage, setShowSuccessMessage] = useState('');
     const [selectedId, setSelectedId] = useState('')
     const [fileName, setFileName] = useState('');
+
+    const navigate = useNavigate()
   
 
     useEffect(() => {
@@ -38,6 +41,7 @@ const AddSubCategory = () => {
 
         console.log(selectedId)
         console.log(data)
+        navigate("/addproductdetails")
 
         fetch('https://2zii0x3fsl.execute-api.ap-south-1.amazonaws.com/dev/post-subCategory',
             {
@@ -85,13 +89,13 @@ const AddSubCategory = () => {
     const isBelow480px = useMediaQuery('(max-width:480px)');
 
     const containerStyles = {
-        minHeight: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        // padding: '20px',
+        // minHeight: '100vh',
+        // display: 'flex',
+        // alignItems: 'center',
+        // justifyContent: 'center',
+        padding: '120px',
         ...(isBelow480px && {
-            minHeight: '60vh',
+            padding:'50px 0'
         }),
     };
 
@@ -187,7 +191,7 @@ const AddSubCategory = () => {
             <div style={containerStyles}>
                 <form onSubmit={handlesubmit}>
                     <Grid container justifyContent="center">
-                        <Grid item xs={8} sm={12} md={12}>
+                        <Grid item xs={8} sm={6} md={4} lg={4} xl={4}>
                             <Paper elevation={10} style={formStyles}>
                                 <Box
                                     display="flex"

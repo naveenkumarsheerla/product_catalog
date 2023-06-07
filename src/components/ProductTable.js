@@ -1,7 +1,11 @@
+import { Box, Pagination, PaginationItem, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
+import { margin } from "@mui/system";
 import React, { useEffect, useState } from "react";
-// import "../src/table.css"
-import { Button, Form, Modal } from "react-bootstrap";
-
+// import "../Components/ProductTable.css"
+import { Form, Modal } from "react-bootstrap";
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import Button from '@mui/material/Button';
 
 export const ProductTable = () => {
 
@@ -9,8 +13,9 @@ export const ProductTable = () => {
   const [editingItem, setEditingItem] = useState(null);
   const [showEditModal, setShowEditModal] = useState(false);
   const [editedData, setEditedData] = useState({});
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(5);
 
-    console.log(editedData)
   const handleDeleteClick = (id) => {
     fetch(`https://2zii0x3fsl.execute-api.ap-south-1.amazonaws.com/dev/products/${id}`, {
       method: "DELETE",
@@ -56,49 +61,92 @@ export const ProductTable = () => {
       .catch((error) => console.log(error));
   };
 
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(data.length / itemsPerPage);
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
   return (
     <>
       
-      <table className="table">
-        <thead>
-          <tr>
-            <th scope="col">Name</th>
-            <th scope="col">Price</th>
-            <th scope="col">weight</th>
-            <th scope="col">categoryName</th>
-            <th scope="col">subCategoryName</th>
-            <th scope="col">description</th>
-            <th scope="col">Edit</th>
-            <th scope="col">delete</th>
-          </tr>
-        </thead>
-        <tbody>
-          {Array.isArray(data) && data.length > 0 ? (
-            data.map((item) => (
-              <tr key={item.id}>
-                <td>{item.name}</td>
-                <td>{item.price}</td>
-                <td>{item.weight}</td>
-                <td>{item.categoryName}</td>
-                <td>{item.subCategoryName}</td>
-                <td>{item.description}</td>
-               <td>
-                  <button onClick={() => handleEditClick(item)}>edit</button>
-                </td>
-                <td>
-                  <button onClick={() => handleDeleteClick(item.id)}>delete</button>
-                </td>
-              </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan="8">No data available</td>
-            </tr>
-          )}
-        </tbody>
+      <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+        <TableContainer sx={{ maxHeight: '100%', overflow: 'auto' }}>
+          <Table stickyHeader aria-label="sticky table">
+            <TableHead>
+              <TableRow>
 
-      </table>
+                <TableCell><Typography variant="body1" fontWeight="bold" fontFamily="Open Sans">No.</Typography></TableCell>
+                <TableCell><Typography variant="body1" fontWeight="bold" fontFamily="Open Sans">Name</Typography></TableCell>
+                <TableCell><Typography variant="body1" fontWeight="bold" fontFamily="Open Sans">Price</Typography></TableCell>
+                <TableCell><Typography variant="body1" fontWeight="bold" fontFamily="Open Sans">Wight</Typography></TableCell>
+                <TableCell><Typography variant="body1" fontWeight="bold" fontFamily="Open Sans">CategoryId</Typography></TableCell>
+                <TableCell><Typography variant="body1" fontWeight="bold" fontFamily="Open Sans">SubCategoryId</Typography></TableCell>
+                <TableCell><Typography variant="body1" fontWeight="bold" fontFamily="Open Sans">Description</Typography></TableCell>
+                <TableCell><Typography variant="body1" fontWeight="bold" fontFamily="Open Sans">Edit</Typography></TableCell>
+                <TableCell><Typography variant="body1" fontWeight="bold" fontFamily="Open Sans">Delete</Typography></TableCell>
+
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {Array.isArray(currentItems) && currentItems.length > 0 ? (
+                currentItems.map((item) => (
+                  <TableRow hover role="checkbox" tabIndex={-1} key={item.id}>
+                    <TableCell>{item.id}</TableCell>
+                    <TableCell>{item.name}</TableCell>
+                    <TableCell>{item.price}</TableCell>
+                    <TableCell>{item.weight}</TableCell>
+                    <TableCell>{item.categoryName}</TableCell>
+                    <TableCell>{item.subCategoryName}</TableCell>
+                    <TableCell>{item.description}</TableCell>
+                    <TableCell>
+                      <Button onClick={() => handleEditClick(item)}><EditIcon /></Button>
+                    </TableCell>
+                    <TableCell>
+                      <Button onClick={() => handleDeleteClick(item.id)}><DeleteIcon /></Button>
+                    </TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <td colSpan="8">No data available</td>
+                </TableRow>
+              )}
+            </TableBody>
+
+          </Table>
+        </TableContainer>
+      </Paper>
+
       
+      {/* 
+      <Pagination count={totalPages} page={currentPage} onChange={(event, page) => handlePageChange(page)}>
+        {Array.from({ length: totalPages }, (_, index) => (
+          <PaginationItem key={index + 1} component="div" value={index + 1} />
+        ))}
+      </Pagination> */}
+       <Box sx={{ display: 'flex', justifyContent: 'right', margin: '10px' }}>
+      <Pagination
+        count={totalPages}
+        page={currentPage}
+        onChange={(event, page) => handlePageChange(page)}
+        shape="rounded"
+        size="large"
+        boundaryCount={2}
+        // showFirstButton
+        // showLastButton
+        renderItem={(item) => (
+          <PaginationItem
+            component="div"
+            {...item}
+            onClick={() => handlePageChange(item.page)}
+          />
+        )}
+      />
+</Box>
 
       <Modal show={showEditModal} onHide={() => setShowEditModal(false)}>
         <Modal.Header closeButton>
@@ -108,7 +156,7 @@ export const ProductTable = () => {
           <Form>
             <Form.Group>
               <Form.Label>
-              Name</Form.Label>
+                Name</Form.Label>
               <Form.Control
                 type="text"
                 value={editedData.name || ""}
@@ -135,16 +183,16 @@ export const ProductTable = () => {
               <Form.Label>Category</Form.Label>
               <Form.Control
                 type="text"
-                value={editedData.categoryName|| ""}
-                onChange={(e) => setEditedData({ ...editedData, categoryName: e.target.value })}
+                value={editedData.categoryId || ""}
+                onChange={(e) => setEditedData({ ...editedData, categoryId: e.target.value })}
               />
             </Form.Group>
             <Form.Group>
               <Form.Label>Sub Category</Form.Label>
               <Form.Control
                 type="text"
-                value={editedData.subCategoryName || ""}
-                onChange={(e) => setEditedData({ ...editedData, subCategoryName: e.target.value })}
+                value={editedData.subCategoryId || ""}
+                onChange={(e) => setEditedData({ ...editedData, subCategoryId: e.target.value })}
               />
             </Form.Group>
             <Form.Group>

@@ -3,6 +3,7 @@ import { TextField, Button, Grid, FormControl, Box, Paper, useMediaQuery } from 
 import S3 from 'react-s3';
 import { Buffer } from 'buffer';
 import styled from '@emotion/styled';
+import { useNavigate } from 'react-router-dom';
 
 const config = {
     bucketName: 'catalog-naveen',
@@ -18,10 +19,12 @@ const AddCategory = () => {
 
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
+    const navigate =useNavigate()
+
     const handleSubmit = async (event) => {
         event.preventDefault();
         console.log(formData)
-
+        navigate('/addsubcategory')
 
         fetch("https://2zii0x3fsl.execute-api.ap-south-1.amazonaws.com/dev/post-category", {
             method: "POST",
@@ -68,13 +71,13 @@ const AddCategory = () => {
     const isBelow480px = useMediaQuery('(max-width:480px)');
 
     const containerStyles = {
-        minHeight: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        // padding: '20px',
+        // minHeight: '100vh',
+        // display: 'flex',
+        // alignItems: 'center',
+        // justifyContent: 'center',
+        padding: '120px',
         ...(isBelow480px && {
-            minHeight: '50vh',
+              padding:'50px 0'
         }),
     };
 
@@ -135,6 +138,9 @@ const AddCategory = () => {
             backgroundColor: '#f09916',
             borderColor: "#f09916",
         },
+        ...(isBelow480px && {
+            fontSize:'0.6rem'
+        })
     }));
 
     const SaveButton = styled(Button)(({ theme }) => ({
@@ -150,6 +156,9 @@ const AddCategory = () => {
             backgroundColor: '#065cb3',
             borderColor: "#065cb3",
         },
+        ...(isBelow480px && {
+            fontSize:'0.6rem'
+        })
     }));
 
 
@@ -158,7 +167,7 @@ const AddCategory = () => {
         <div style={containerStyles}>
             <form onSubmit={handleSubmit}>
                 <Grid container justifyContent="center">
-                    <Grid item xs={8} sm={12} md={12} >
+                    <Grid item xs={8} sm={6} mb={4} lg={4} xl={4} >
                         <Paper elevation={10} style={formStyles}>
                             <Box
                                 display="flex"

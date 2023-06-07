@@ -1,6 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
-import { BrowserRouter, Link, Outlet, RouterProvider, createBrowserRouter, useParams } from 'react-router-dom';
+import { BrowserRouter, Link, Outlet, Route, RouterProvider, Routes, createBrowserRouter, useLocation, useParams } from 'react-router-dom';
 import { Categories } from './components/Categories';
 import { Subcategory } from './components/Subcategory';
 import { ProductList } from './components/ProductList';
@@ -50,6 +50,7 @@ function Breadcrumbs() {
   );
 }
 
+
 function App() {
   const router = createBrowserRouter([
     {
@@ -83,7 +84,7 @@ function App() {
       element: (
         <>
           <Breadcrumbs />
-          <ProductDetails/>
+          <ProductDetails />
         </>
       ),
     },
@@ -96,15 +97,6 @@ function App() {
         </>
       ),
     },
-    // {
-    //   path: '/search',
-    //   element: (
-    //     <>
-    //       <Breadcrumbs />
-    //       <Search />
-    //     </>
-    //   ),
-    // },
     {
       path: '/searchresult/:id',
       element: (
@@ -133,16 +125,18 @@ function App() {
     }
 
   ]);
+
+
   return (
     <SearchProvider>
       <>
         <BrowserRouter>
-          <Navbar />
+          <Navbar/>
         </BrowserRouter>
-        <RouterProvider router={router}>
-          <Outlet />
-        </RouterProvider>
-
+          <RouterProvider router={router}>
+            <Outlet />
+          </RouterProvider>
+       
       </>
     </SearchProvider>
   );

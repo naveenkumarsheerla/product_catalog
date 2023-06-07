@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Box,styled, Button, FormControl, Grid, MenuItem, Paper, TextField,useMediaQuery } from '@mui/material';
+import { Box, styled, Button, FormControl, Grid, MenuItem, Paper, TextField, useMediaQuery } from '@mui/material';
 import S3 from 'react-s3';
 import { Buffer } from 'buffer';
 
@@ -27,8 +27,9 @@ const AddProductDetails = () => {
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
     const [selectedCategoryId, setSelectedCategoryId] = useState('');
     const [selectedSubCategoryId, setSelectedSubCategoryId] = useState('');
+    const [selectedFiles, setSelectedFiles] = useState([]);
 
-    // const imgPath = window.location.origin
+
 
     const ITEM_HEIGHT = 48;
     const ITEM_PADDING_TOP = 8;
@@ -43,7 +44,7 @@ const AddProductDetails = () => {
 
 
     useEffect(() => {
-      
+
         fetch('https://2zii0x3fsl.execute-api.ap-south-1.amazonaws.com/dev/get-category')
             .then(response => response.json())
             .then(data => {
@@ -60,7 +61,7 @@ const AddProductDetails = () => {
         const id = (selectedCategory)
         console.log(typeof (id))
         if (id) {
-       
+
             fetch(`https://2zii0x3fsl.execute-api.ap-south-1.amazonaws.com/dev/subcategories?category_name=${id}`)
                 .then(response => response.json())
                 .then(data => {
@@ -106,7 +107,7 @@ const AddProductDetails = () => {
         setProductName(event.target.value);
     };
 
-    const handleBrandNameChange =(event)=>{
+    const handleBrandNameChange = (event) => {
         setBrandName(event.target.value)
 
     }
@@ -120,10 +121,13 @@ const AddProductDetails = () => {
     };
 
 
-  
+
     const handleFileUpload = async (e) => {
         global.Buffer = Buffer;
         const files = e.target.files;
+        const fileNames = Array.from(files).map((file) => file.name);
+
+        setSelectedFiles(fileNames)
 
         try {
             const uploadPromises = Array.from(files).map((file) => {
@@ -133,11 +137,13 @@ const AddProductDetails = () => {
                     fileName: uniqueFileName,
                 };
                 return S3.uploadFile(file, options);
+
             });
 
             const uploadResponses = await Promise.all(uploadPromises);
             const uploadLocations = uploadResponses.map((response) => response.location);
             setProductImage(uploadLocations)
+
             console.log('Images uploaded successfully:', uploadLocations);
         } catch (error) {
             console.error('Error uploading images:', error);
@@ -165,7 +171,7 @@ const AddProductDetails = () => {
             categoryId: (selectedCategoryId),
             subCategoryName: (selectedSubCategory),
             subCategoryId: (selectedSubCategoryId),
-            brandName:(brandName),
+            brandName: (brandName),
             name: productName,
             description: productDescription,
             price: Number(productPrice),
@@ -175,7 +181,7 @@ const AddProductDetails = () => {
 
         };
         console.log(formData)
-     
+
 
         fetch('https://2zii0x3fsl.execute-api.ap-south-1.amazonaws.com/dev/post-product', {
             method: 'POST',
@@ -220,7 +226,7 @@ const AddProductDetails = () => {
         ...(isBelow480px && {
             // minHeight: '50vh',
             padding: '50px 0',
-          }),
+        }),
     };
 
     const formStyles = {
@@ -257,14 +263,14 @@ const AddProductDetails = () => {
     const uploadButtonStyles = {
         width: '100%',
 
-    borderColor: '#f09916',
-    '&:hover': {
-      borderColor: '#f09916',
-    },
-    ...(isBelow480px && {
-      width: '100%',
-    }),
-      };
+        borderColor: '#f09916',
+        '&:hover': {
+            borderColor: '#f09916',
+        },
+        ...(isBelow480px && {
+            width: '100%',
+        }),
+    };
 
     const ClearButton = styled(Button)(({ theme }) => ({
         color: "white",
@@ -281,7 +287,7 @@ const AddProductDetails = () => {
         },
         ...(isBelow480px && {
             fontSize: "0.6rem",
-          }),
+        }),
     }));
 
     const SaveButton = styled(Button)(({ theme }) => ({
@@ -299,49 +305,49 @@ const AddProductDetails = () => {
         },
         ...(isBelow480px && {
             fontSize: "0.6rem",
-          }),
+        }),
     }));
 
     return (
         <>
-                <div style={containerStyles}>
+            <div style={containerStyles}>
                 <form onSubmit={handleSubmit}>
                     <Grid container justifyContent="center">
                         <Grid item xs={10} sm={6} md={4} lg={4} xl={4}>
                             <Paper elevation={10} style={formStyles}>
-                        <Box
-                            display="flex"
-                            flexDirection="column"     
-                            backgroundColor="white"
-                            alignItems="center"
-                            justifyContent="center"                      
-                            padding="0px 20px"     
-                        >
-
-                            <h3 className="Auth-form-title">Product Details</h3>
-                            {/* <Grid container> */}
-                            {/* <Grid item xs={6}> */}
-
-                            <FormControl fullWidth sx={{ m: 1 }}>
-                                <TextField
-                                    // labelId="demo-multiple-name-label"
-                                    label="Category"
-                                    id="category"
-                                    size='small'
-                                    select
-                                    value={selectedCategory}
-                                    // input={<OutlinedInput label="Category" />}
-                                    menuprops={menuprops}
-                                    onChange={handleCategoryChange}
-                                    sx={textFieldStyles}
+                                <Box
+                                    display="flex"
+                                    flexDirection="column"
+                                    backgroundColor="white"
+                                    alignItems="center"
+                                    justifyContent="center"
+                                    padding="0px 20px"
                                 >
-                                    {categories.map(category => (
-                                        <MenuItem key={category.id} value={category.name} >{category.name}</MenuItem>
-                                    ))}
-                                </TextField>
-                            </FormControl>
 
-                            <FormControl fullWidth sx={{ m: 1 }}>
+                                    <h3 className="Auth-form-title">Product Details</h3>
+                                    {/* <Grid container> */}
+                                    {/* <Grid item xs={6}> */}
+
+                                    <FormControl fullWidth sx={{ m: 1 }}>
+                                        <TextField
+                                            // labelId="demo-multiple-name-label"
+                                            label="Category"
+                                            id="category"
+                                            size='small'
+                                            select
+                                            value={selectedCategory}
+                                            // input={<OutlinedInput label="Category" />}
+                                            menuprops={menuprops}
+                                            onChange={handleCategoryChange}
+                                            sx={textFieldStyles}
+                                        >
+                                            {categories.map(category => (
+                                                <MenuItem key={category.id} value={category.name} >{category.name}</MenuItem>
+                                            ))}
+                                        </TextField>
+                                    </FormControl>
+
+                                    {/* <FormControl fullWidth sx={{ m: 1 }}>
                                 <TextField
                                     label="Category ID"
                                     id="categoryId"
@@ -351,7 +357,7 @@ const AddProductDetails = () => {
                                     disabled
                                     sx={textFieldStyles}
                                 />
-                            </FormControl>
+                            </FormControl> */}
 
                                     <FormControl fullWidth sx={{ m: 1 }}>
                                         <TextField
@@ -360,7 +366,7 @@ const AddProductDetails = () => {
                                             // labelId="demo-multiple-name-label"
                                             size='small'
                                             select
-                                            displayEmpty
+                                            displayempty="true"
                                             label="Sub Category"
                                             menuprops={menuprops}
                                             value={selectedSubCategory}
@@ -372,9 +378,9 @@ const AddProductDetails = () => {
                                             ))}
                                         </TextField>
                                     </FormControl>
-                            <FormControl fullWidth sx={{ m: 1 }}>
+                                    {/* <FormControl fullWidth sx={{ m: 1 }}>
                                 <TextField
-                                    label="Category ID"
+                                    label="Sub Category ID"
                                     id="categoryId"
                                     size='small'
                                     variant="outlined"
@@ -382,136 +388,142 @@ const AddProductDetails = () => {
                                     disabled
                                     sx={textFieldStyles}
                                 />
-                            </FormControl>
+                            </FormControl> */}
 
-                                <FormControl fullWidth sx={{ m: 1 }}>
-                                    <TextField
-                                        type="text"
-                                        label="Brand Name"
-                                        size="small"
-                                        variant="outlined"
-                                        value={brandName}
-                                        onChange={handleBrandNameChange}
-                                        sx={textFieldStyles}
-                                    />
-                                </FormControl>
-
-                                <FormControl fullWidth sx={{ m: 1 }}>
-                                    <TextField
-                                        type="text"
-                                        label="Product Name"
-                                        size="small"
-                                        variant="outlined"
-                                        value={productName}
-                                        onChange={handleProductNameChange}
-                                        sx={textFieldStyles}
-                                    />
-                                </FormControl>
-
-                                <FormControl fullWidth sx={{ m: 1 }}>
-                                    <TextField
-                                        type="number"
-                                        label="Product Price"
-                                        // name="productPrice"
-                                        variant="outlined"
-                                        size="small"
-                                        value={productPrice}
-                                        onChange={handleProductPriceChange}
-                                        sx={textFieldStyles}
-                                    />
-                                </FormControl>
-
-                                <FormControl fullWidth sx={{ m: 1 }}>
-                                    <TextField
-                                        type="text"
-                                        label="Product Weight"
-                                        variant="outlined"
-                                        size="small"
-                                        name="productWeight"
-                                        value={productWeight || ''}
-                                        onChange={handleProductWeightChange}
-                                        sx={textFieldStyles}
-                                    />
-                                </FormControl>
-
-                                <FormControl fullWidth sx={{ m: 1 }}>
-                                    <TextField
-                                        type="text"
-                                        label="Product Keywords"
-                                        size="small"
-                                        variant="outlined"
-                                        value={productKeywords}
-                                        onChange={handleProductKeywordsChange}
-                                        sx={textFieldStyles}
-                                    />
-                                </FormControl>
-
-                                <FormControl fullWidth sx={{ m: 1 }}>
-                                    <TextField id="outlined-multiline-static"
-                                        label="Product Description"
-                                        multiline
-                                        rows={2}
-                                        value={productDescription}
-                                        onChange={handleProductDescriptionChange}
-                                        sx={textFieldStyles}
-                                    />
-                                </FormControl>
-                                <FormControl fullWidth sx={{ m: 1 }}>
-                                    <input
-                                        type="file"
-                                        accept="image/*"
-                                        hidden
-                                        id="productImage"
-                                        name="productImage"
-                                        multiple
-                                        defaultValue={productImage}
-                                        onChange={handleFileUpload}
-                                        sx={{ display: 'none' }}
-                                    // onChange={(e) => setProductImage(data => ({ ...data, image: imgPath + /images/ + e.target.files[0].name }))}
-                                    />
-                                    <label htmlFor="productImage">
-                                        <Button
+                                    <FormControl fullWidth sx={{ m: 1 }}>
+                                        <TextField
+                                            type="text"
+                                            label="Brand Name"
+                                            size="small"
                                             variant="outlined"
-                                            component="span"
-                                            sx={uploadButtonStyles} >
-                                            <span
-                                                style={{
-                                                    fontSize: '11px',
-                                                    color: '#f09916'
-                                                }}
-                                            >
-                                                Upload Image
-                                            </span>
+                                            value={brandName}
+                                            onChange={handleBrandNameChange}
+                                            sx={textFieldStyles}
+                                        />
+                                    </FormControl>
 
-                                        </Button>
-                                    </label>
+                                    <FormControl fullWidth sx={{ m: 1 }}>
+                                        <TextField
+                                            type="text"
+                                            label="Product Name"
+                                            size="small"
+                                            variant="outlined"
+                                            value={productName}
+                                            onChange={handleProductNameChange}
+                                            sx={textFieldStyles}
+                                        />
+                                    </FormControl>
 
-                                </FormControl>
+                                    <FormControl fullWidth sx={{ m: 1 }}>
+                                        <TextField
+                                            type="number"
+                                            label="Product Price"
+                                            // name="productPrice"
+                                            variant="outlined"
+                                            size="small"
+                                            value={productPrice}
+                                            onChange={handleProductPriceChange}
+                                            sx={textFieldStyles}
+                                        />
+                                    </FormControl>
 
-                            <div style={{ textAlign: 'center' }}>
-                            <ClearButton type="button"
-                                        onClick={handleClearButtonClick}
-                                    >
-                                           Cancel
-                                    </ClearButton>
-                                    <SaveButton
-                                        type="submit"
-                                    >
-                                        Save
-                                    </SaveButton>
-                                <div className="showcontent">
-                                    {showSuccessMessage && (
-                                        <div className="success-message">Successfully updated!</div>
-                                    )}
-                                </div>
-                            </div>
-                            {/* </Grid> */}
-                            </Box>
-                        </Paper>
+                                    <FormControl fullWidth sx={{ m: 1 }}>
+                                        <TextField
+                                            type="text"
+                                            label="Product Weight"
+                                            variant="outlined"
+                                            size="small"
+                                            name="productWeight"
+                                            value={productWeight || ''}
+                                            onChange={handleProductWeightChange}
+                                            sx={textFieldStyles}
+                                        />
+                                    </FormControl>
+
+                                    <FormControl fullWidth sx={{ m: 1 }}>
+                                        <TextField
+                                            type="text"
+                                            label="Product Keywords"
+                                            size="small"
+                                            variant="outlined"
+                                            value={productKeywords}
+                                            onChange={handleProductKeywordsChange}
+                                            sx={textFieldStyles}
+                                        />
+                                    </FormControl>
+
+                                    <FormControl fullWidth sx={{ m: 1 }}>
+                                        <TextField id="outlined-multiline-static"
+                                            label="Product Description"
+                                            multiline
+                                            rows={2}
+                                            value={productDescription}
+                                            onChange={handleProductDescriptionChange}
+                                            sx={textFieldStyles}
+                                        />
+                                    </FormControl>
+                                    <FormControl fullWidth sx={{ m: 1 }}>
+                                        <input
+                                            type="file"
+                                            accept="image/*"
+                                            hidden
+                                            id="productImage"
+                                            name="productImage"
+                                            multiple
+                                            defaultValue={productImage}
+                                            onChange={handleFileUpload}
+                                            sx={{ display: 'none' }}
+                                        // onChange={(e) => setProductImage(data => ({ ...data, image: imgPath + /images/ + e.target.files[0].name }))}
+                                        />
+                                        <label htmlFor="productImage">
+                                            <Button
+                                                variant="outlined"
+                                                component="span"
+                                                sx={uploadButtonStyles} >
+                                                <span
+                                                    style={{
+                                                        fontSize: '11px',
+                                                        color: '#f09916'
+                                                    }}
+                                                >
+                                                    Upload Image
+                                                </span>
+
+                                            </Button>
+                                        </label>
+                                        <div>
+                                            {selectedFiles.map((fileName, index) => (
+                                                <li key={index}
+                                                 style={{listStyleType:'none',display:'flex',justifyContent:'center',fontSize:'0.8rem'}}>{fileName.substring(0,8)+"...."}</li>
+                                            ))}
+                                        </div>
+
+                                    </FormControl>
+
+                                    <div style={{ textAlign: 'center' }}>
+                                        <ClearButton type="button"
+                                            onClick={handleClearButtonClick}
+                                        >
+                                            Cancel
+                                        </ClearButton>
+                                        <SaveButton
+                                            type="submit"
+                                        >
+                                            Save
+                                        </SaveButton>
+                                        <div className="showcontent">
+                                            {showSuccessMessage && (
+                                                <div className="success-message">Successfully updated!</div>
+                                            )}
+                                        </div>
+                                    </div>
+                                    {/* </Grid> */}
+                                </Box>
+                            </Paper>
+                        </Grid>
                     </Grid>
-                </Grid>
-            </form>
-        </div >
+                </form>
+            </div >
         </>
     )
 }
